@@ -1,6 +1,7 @@
 import string
 import secrets
 import json
+import os
 
 def GetUserPasswordSettings():
     
@@ -62,26 +63,47 @@ def GeneratePassword():
         print(f"Symbols: {'Yes' if symbol else 'No'}")
         print("----------------------------")
 
-        confirmInput = input("Are you happy with these settings? (y/n): ")
+        confirmSettingsInput = input("Are you happy with these settings? (y/n): ")
 
-        settingApproved = confirmInput.lower() == "y"
+        settingApproved = confirmSettingsInput.lower() == "y"
 
     charPool = CreatePasswordCharacterPool(lower, upper, number, symbol)
     
-    password = ""
-    for i in range(length):
-        randomChar = secrets.choice(charPool)
-        password = password + randomChar
+    passwordApproved = False
 
+    while not passwordApproved:
+        password = ""
+        for i in range(length):
+            randomChar = secrets.choice(charPool)
+            password = password + randomChar
+
+        confirmPasswordInput = input(f"Are you happy with the password {password} ? (y/n): ")
+        passwordApproved = confirmPasswordInput.lower() == "y"
+
+    
     return password
 
-def SaveEntry():
+def SaveEntry(newEntry):
 
-    with open("dateiname.txt", "w") as file:
-        file.write("Hier steht dein Text")
+    currentList = LoadEntries()
+
+    currentList.append(newEntry)
+
+    jsonText = json.dumps(currentList)
+
+    with open("passwords.json", "w") as file:
+        file.write(jsonText)
 
 def LoadEntries():
-    return
+
+    if not os.path.exists("passwords.json"):
+        return []
+    
+    with open("passwords.json", "r") as file:
+        content = file.read()
+
+        list = json.loads(content)
+        return list
 
 def CreateEntry():
 
