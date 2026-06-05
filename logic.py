@@ -118,3 +118,37 @@ def CreateEntry():
     }
 
     return entry
+
+def ShowExistingEntry():
+
+    for entry in LoadEntries():
+        print("-------------------------")
+        print(f"Title: {entry["title"]}")
+        print(f"Description: {entry["description"]}")
+        print(f"Password {entry["password"]}")
+        print("-------------------------")
+
+def HandleMenu():
+
+    while True:
+        print("1. Create Password")
+        print("2. Read the existing Passwords")
+        print("3. End Program")
+
+        inputChoose = input("Choose (1-3): ").strip()
+
+        match inputChoose:
+            case "1":
+                newEntry = CreateEntry()
+                SaveEntry(newEntry)
+                print("\n[SUCCESS] Password successfully saved in 'passwords.json'")
+            case "2":
+                ShowExistingEntry()
+                print("\n[SUCCESS] Passwords were successfully retrieved")
+            case "3":
+                print("\n[SUCCESS] PROGRAM EXIT")
+                break
+            case _:
+                print("\n [!] Invalid selection. Please choose one of the numbers listed")
+
+            
