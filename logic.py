@@ -85,18 +85,7 @@ def GeneratePassword():
     
     return password
 
-def SaveEntry(newEntry):
-
-    currentList = LoadEntries()
-
-    currentList.append(newEntry)
-
-    jsonText = json.dumps(currentList)
-
-    with open("passwords.json", "w") as file:
-        file.write(jsonText)
-
-def SaveAllEntries(entries_list):
+def SavePasswords(entries_list):
     """Überschreibt die JSON-Datei mit der modifizierten Liste"""
     jsonText = json.dumps(entries_list, indent=4)
     with open("passwords.json", "w") as file:
@@ -135,7 +124,7 @@ def ShowExistingEntry():
         print(f"\n------ ENTRY [{index}] -----------")
         print(f"Title: {entry['title']}")
         print(f"Description: {entry['description']}")
-        print(f"Password {entry['password']}")
+        print(f"Password: {entry['password']}")
         print("-------------------------")
 
     return True
@@ -179,11 +168,11 @@ def EditExistingEntry():
                 password = GeneratePassword()
                 selectedEntry['password'] = password
 
-            SaveAllEntries(entries)
+            SavePasswords(entries)
         
         case "2":
             deleteEntry = entries.pop(choiceIndex)
-            SaveAllEntries(entries)
+            SavePasswords(entries)
         case _:
             print("\n [!] Invalid selection. Please choose [1] for editing | [2] for deleting an Entry")
 
@@ -202,7 +191,9 @@ def HandleMenu():
         match inputChoose:
             case "1":
                 newEntry = CreateEntry()
-                SaveEntry(newEntry)
+                currentList = LoadEntries()
+                currentList.append(newEntry)
+                SavePasswords(currentList)
                 print("\n[SUCCESS] Password successfully saved in 'passwords.json'")
             case "2":
                 ShowExistingEntry()
@@ -214,5 +205,3 @@ def HandleMenu():
                 break
             case _:
                 print("\n [!] Invalid selection. Please choose one of the numbers listed")
-
-      
