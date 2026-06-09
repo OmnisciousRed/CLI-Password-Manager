@@ -12,3 +12,6 @@ The goal was to write a password manager in Python that allows users to create, 
 how to?
 pip install -r requirements.txt
 
+<div align="center">
+  <img src="./password_manager_flow.svg" alt="My animated banner" width="100%">
+</div>
